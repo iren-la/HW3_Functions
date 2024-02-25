@@ -60,13 +60,13 @@ fun calculatedCommission (typeCard: String, amountForMonth: Int = 0, amount: Int
     val minCommissionVisa = 35
 
     //расчет коммиссии в зависимости от типа карты
-    when (typeCard) {
-        "Mastercard" -> return when {
+    return when (typeCard) {
+        "Mastercard" -> when {
             amountForMonth >= sumWithoutCommissionMastercard -> (amount * commissionMastercard + fixCommissionMastercard).toInt()
             amount + amountForMonth > sumWithoutCommissionMastercard -> ((amount + amountForMonth - sumWithoutCommissionMastercard) * commissionMastercard + fixCommissionMastercard).toInt()
             else -> 0
         }
-        "Visa" -> return if (amount * commissionVisa > minCommissionVisa) (amount * commissionVisa).toInt() else minCommissionVisa
-        else -> return 0
+        "Visa" -> if (amount * commissionVisa > minCommissionVisa) (amount * commissionVisa).toInt() else minCommissionVisa
+        else -> 0
     }
 }
