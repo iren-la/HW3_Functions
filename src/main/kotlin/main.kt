@@ -7,19 +7,17 @@ fun main() {
     //homework 2
     //общие параметры переводов между картами
     val typeCard = "Mastercard"
-    val limitPerDay = 150_000
-    val limitPerMonth = 600_000
-    val amount = 150_000
+
+    val amount = 80_000
     val amountForDay = 0
     val amountForMonth = 0
 
-    //проверка на дневной и месячный лимит вне зависимости от типа карты
-    if (amount + amountForDay <= limitPerDay && amount + amountForMonth <= limitPerMonth) {
-        println("Комиссия за перевод составит " + calculatedCommission(typeCard, amountForMonth, amount) + " руб.")
+    //расчет коммиссии
+    if (calculatedCommission(typeCard, amountForMonth, amountForDay, amount) >= 0) {
+        println("Комиссия за перевод составит " + calculatedCommission(typeCard, amountForMonth, amountForDay, amount) + " руб.")
     } else {
         println("Перевод невозможен. Превышены установленные лимиты.")
     }
-
 }
 
 fun agoToText (seconds: Int) {
@@ -51,22 +49,29 @@ fun correctWordForHours (seconds: Int) : String {
     }
 }
 
-fun calculatedCommission (typeCard: String, amountForMonth: Int = 0, amount: Int) : Int {
+fun calculatedCommission (typeCard: String = "Мир", amountForMonth: Int = 0, amountForDay: Int = 0, amount: Int) : Int {
     //параметры коммиссий и лимитов по типам кард
+    val limitPerDay = 150_000
+    val limitPerMonth = 600_000
     val commissionMastercard = 0.006
     val fixCommissionMastercard = 20
     val sumWithoutCommissionMastercard = 75_000
     val commissionVisa = 0.0075
     val minCommissionVisa = 35
 
-    //расчет коммиссии в зависимости от типа карты
-    return when (typeCard) {
-        "Mastercard" -> when {
-            amountForMonth >= sumWithoutCommissionMastercard -> (amount * commissionMastercard + fixCommissionMastercard).toInt()
-            amount + amountForMonth > sumWithoutCommissionMastercard -> ((amount + amountForMonth - sumWithoutCommissionMastercard) * commissionMastercard + fixCommissionMastercard).toInt()
+    //проверка превышения лимитов. Если лимиты превышены - возвращаем отрицательное значение
+    if (amount + amountForDay > limitPerDay || amount + amountForMonth > limitPerMonth) {
+        return -1
+    } else {
+        //расчет коммиссии в зависимости от типа карты
+        return when (typeCard) {
+            "Mastercard" -> when {
+                amountForMonth >= sumWithoutCommissionMastercard -> (amount * commissionMastercard + fixCommissionMastercard).toInt()
+                amount + amountForMonth > sumWithoutCommissionMastercard -> ((amount + amountForMonth - sumWithoutCommissionMastercard) * commissionMastercard + fixCommissionMastercard).toInt()
+                else -> 0
+            }
+            "Visa" -> if (amount * commissionVisa > minCommissionVisa) (amount * commissionVisa).toInt() else minCommissionVisa
             else -> 0
         }
-        "Visa" -> if (amount * commissionVisa > minCommissionVisa) (amount * commissionVisa).toInt() else minCommissionVisa
-        else -> 0
     }
 }
