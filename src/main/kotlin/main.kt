@@ -8,9 +8,9 @@ fun main() {
     //общие параметры переводов между картами
     val typeCard = "Mastercard"
 
-    val amount = 80_000
+    val amount = 50_000
     val amountForDay = 0
-    val amountForMonth = 0
+    val amountForMonth = 50_000
 
     //расчет коммиссии
     if (calculatedCommission(typeCard, amountForMonth, amountForDay, amount) >= 0) {
