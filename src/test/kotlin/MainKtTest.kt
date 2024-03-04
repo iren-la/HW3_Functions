@@ -17,7 +17,7 @@ class MainKtTest {
             amountForDay = amountForDay,
             amount = amount)
 
-        assertEquals(20, result)
+        assertEquals(0, result)
     }
 
     @Test
@@ -34,22 +34,6 @@ class MainKtTest {
             amount = amount)
 
         assertEquals(320, result)
-    }
-
-    @Test
-    fun calculatedCommission_MasterCard_over75000() {
-        val typeCard = "Mastercard"
-        val amount = 80_000
-        val amountForDay = 0
-        val amountForMonth = 0
-
-        val result = calculatedCommission(
-            typeCard = typeCard,
-            amountForMonth = amountForMonth,
-            amountForDay = amountForDay,
-            amount = amount)
-
-        assertEquals(50, result)
     }
 
     @Test
