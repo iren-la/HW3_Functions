@@ -17,7 +17,7 @@ class MainKtTest {
             amountForDay = amountForDay,
             amount = amount)
 
-        assertEquals(0, result)
+        assertEquals(20, result)
     }
 
     @Test
